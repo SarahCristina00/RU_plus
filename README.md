@@ -20,3 +20,9 @@ Este é o sistema RU+, uma plataforma web para facilitar a recarga online do car
 1. Clone este repositório
 2. Execute `npm install` para instalar as dependências
 3. Rode `npm start` para iniciar o servidor
+
+## Autores do projeto 
+Lara dias
+Sarah Cristina
+Wilian Santos
+
