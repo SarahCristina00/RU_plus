@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+let historico = {};
 
 let saldos = {
   202312345: 25.0,
@@ -29,9 +30,33 @@ router.post("/:matricula", (req, res) => {
 
   saldos[matricula] += valor;
 
+  if (!historico[matricula]) {
+    historico[matricula] = [];
+  }
+
+  historico[matricula].push({
+    data: new Date().toISOString(),
+    valor: valor,
+  });
+
   res.json({
     mensagem: `Recarga de R$${valor.toFixed(2)} realizada com sucesso.`,
     saldoAtual: saldos[matricula],
+  });
+
+  router.get("/historico/:matricula", (req, res) => {
+    const matricula = req.params.matricula;
+
+    if (!historico[matricula]) {
+      return res
+        .status(404)
+        .json({ erro: "Nenhum histórico encontrado para esta matrícula." });
+    }
+
+    res.json({
+      matricula,
+      recargas: historico[matricula],
+    });
   });
 });
 
