@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RU+ - Recarga</title>
+  </head>
+  <body>
+    <h1>RU+ - Recarga do Cartão</h1>
+
+    <label>Matrícula:</label>
+    <input type="text" id="matricula" placeholder="Digite sua matrícula" />
+
+    <br /><br />
+
+    <button onclick="verSaldo()">Ver saldo</button>
+    <p id="saldo"></p>
+
+    <hr />
+    <label>Valor da recarga (R$):</label>
+    <input type="number" id="valor" step="0.10" /><br /><br />
+
+    <button onclick="fazerRecarga()">Fazer recarga</button>
+    <p id="mensagem"></p>
+
+    <script>
+      async function verSaldo() {
+        const matricula = document.getElementById("matricula").value;
+        const saldoElem = document.getElementById("saldo");
+
+        const res = await fetch(`/recargas/saldo/${matricula}`);
+        if (res.ok) {
+          const dados = await res.json();
+          saldoElem.textContent = `Saldo atual: R$ ${dados.saldo.toFixed(2)}`;
+        } else {
+          saldoElem.textContent = "Matrícula não encontrada.";
+        }
+      }
+
+      async function fazerRecarga() {
+        const matricula = document.getElementById("matricula").value;
+        const valor = parseFloat(document.getElementById("valor").value);
+        const mensagem = document.getElementById("mensagem");
+
+        const res = await fetch(`/recargas/adicionar`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ matricula, valor }),
+        });
+
+        const dados = await res.json();
+
+        if (res.ok) {
+          mensagem.textContent = `Recarga de R$ ${valor.toFixed(2)} realizada com sucesso!`;
+          verSaldo();
+        } else {
+          mensagem.textContent = dados.erro || "Erro ao recarregar.";
+        }
+      }
+    </script>
+  </body>
+</html>
