@@ -1,0 +1,133 @@
+#recarga {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 20px;
+}
+
+.recarga-container {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px var(--fundo);
+    width: 100%;
+    max-width: 750px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.recarga-container h2 {
+    text-align: center;
+    font-size: 24px;
+    color: var(--primaria);
+    margin: 0;
+}
+
+.valor {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.input-valor {
+    flex-grow: 1;
+}
+
+.input-valor label, .pagamento-section > label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--primaria);
+}
+
+.input-valor input {
+    background-color:var(--fundo);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 16px;
+    font-weight: 500;
+    color:var(--primaria);
+    width: 200px;
+}
+
+.forma-pagamento {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn-pagamento {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: white;
+    color: var(--secundaria);
+    border: 2px solid var(--secundaria);
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-pagamento:hover {
+    background-color: #f0fafa;
+}
+
+.btn-pagamento.selected {
+    background-color: var(--secundaria);
+    color: white;
+}
+
+#btn-recarregar-agora {
+    width: 100%;
+    background-color: var(--secundaria);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 18px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    margin-top: 10px;
+}
+
+#btn-recarregar-agora:hover {
+    filter: brightness(0.9);
+}
+
+#btn-voltar-dashboard {
+    background: none;
+    border: none;
+    color: var(--fundo);
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 0;
+    padding: 10px;
+    font-size: 14px;
+    align-self: center; 
+}
+#btn-voltar-dashboard:hover{
+    color: var(--primaria);
+}
+
+.notificacao-sucesso {
+    background-color: var(--secundaria);
+    color: white;
+    text-align: center;
+    font-weight: 600;
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 750px;
+    margin-top: 20px;
+    box-sizing: border-box;
+}
