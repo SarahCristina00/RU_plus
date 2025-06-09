@@ -24,7 +24,7 @@ let usuarios = {
     ]
   },
   "202312345": {
-    saldo: 25.0,
+    saldo: -25.0,
     historico:[
       { dataHora: "2025-06-09T11:00:00-03:00", tipo: 'Recarga', valor: 10.00 },
       { dataHora: "2025-06-08T19:25:00-03:00", tipo: 'Jantar', valor: -1.40 },

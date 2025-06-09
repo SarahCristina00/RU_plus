@@ -11,7 +11,7 @@
 .saldo {
     font-size: 18px;
     font-weight: 500;
-    background-color: var(--alerta);
+    background-color: var(--primaria);
     color: var(--fundo);
     padding: 10px 20px;
     border-radius: 5px;
