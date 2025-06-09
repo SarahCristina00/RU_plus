@@ -30,9 +30,9 @@ export function mostrarRecarga(elements) {
 }
 
 export function prepararTelaRecarga(saldo, elements) {
-    const { saldoRecargaDisplay, opcoesPagamento } = elements;
+    const { saldoDisplay, opcoesPagamento } = elements;
 
-    saldoRecargaDisplay.textContent = `Saldo Atual: ${formatarMoeda(saldo)}`;
+    saldoDisplay.textContent = `Saldo Atual: ${formatarMoeda(saldo)}`;
 
     const botoes = opcoesPagamento.querySelectorAll('.btn-pagamento');
     botoes.forEach(botao => {

@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
         opcoesPagamento: document.querySelector('.forma-pagamento'),
         btnRecarregarAgora: document.getElementById('btn-recarregar-agora'),
         notificacaoSucesso: document.querySelector('.notificacao-sucesso'),
-        saldoRecargaDisplay: document.querySelector('#dashboard .saldo'),
     };
     
     async function carregarDados(page=1) {
@@ -70,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const resultado = await realizarRecarga(matricula, valor, metodoPagamento);
             mostrarNotificacao(resultado.mensagem, elements.notificacaoSucesso);
-            // Opcional: recarregar os dados para atualizar o saldo e extrato
             await carregarDados(); 
             mostrarDashboard(elements);
         } catch (error) {

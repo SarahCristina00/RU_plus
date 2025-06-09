@@ -25,7 +25,7 @@ export async function fetchUserData(matricula, page = 1) {
 //recarga para o servidor
 export async function realizarRecarga(matricula, valor, metodoPagamento) {
     try {
-        const response = await fetch('/recargas/realizar', {
+        const response = await fetch('/recargas/recarga', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
