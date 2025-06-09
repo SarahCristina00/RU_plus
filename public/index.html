@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RU+ | Sistema de Recarga</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
+    lin
 </head>
 <body>
     <header>
@@ -24,6 +25,32 @@
     </header>
 
     <main>
+        <div id="dashboard">
+            <div class="dashboard-header">
+                <div class="saldo"> Carregando saldo...</div>
+                <button class="btn-recarga-main" id="btn-ir-recarga">Recarga</button>
+            </div>
+
+            <div class="extrato">
+                <table class="extrato-tabela">
+                    <thead>
+                        <tr>
+                            <th>Data e Hora</th>
+                            <th>Lançamento</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody id="extrato-dados"></tbody>
+                </table>
+                <div class="paginacao">
+                    <a href="#">&laquo; Anterior</a>
+                    <a href="#" class="active">1</a>
+                    <a href="#">2</a>
+                    <span>...</span>
+                    <a href="#">Próxima &raquo;</a>
+                </div>
+            </div>
+        </div>
     </main>
     
 </body>
