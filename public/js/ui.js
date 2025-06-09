@@ -19,7 +19,20 @@ const formatarData = (dataString) => {
     });
 };
 
-export function atualizarSaldoDisplay(novoSaldo) {
+export function atualizarHeaderUI(matricula, elements) {
+    const { loginForm, userDisplay, matriculaLogadaSpan, matriculaInput } = elements;
+    if (matricula) {
+        matriculaLogadaSpan.textContent = matricula;
+        loginForm.style.display = 'none';
+        userDisplay.style.display = 'flex';
+    } else {
+        matriculaInput.value = '';
+        userDisplay.style.display = 'none';
+        loginForm.style.display = 'flex';
+    }
+}
+
+export function atualizarSaldoDisplay(novoSaldo, saldoDisplay) {
         if(typeof novoSaldo!== 'number'){
             saldoDisplay.textContent = "Saldo indisponível";
             return;
@@ -30,7 +43,7 @@ export function atualizarSaldoDisplay(novoSaldo) {
         else{saldoDisplay.style.backgroundColor='#0CC2AA'}
     }   
 
-export function atualizarExtratoDisplay(historico) {
+export function atualizarExtratoDisplay(historico, extratoDados) {
     extratoDados.innerHTML = '';
 
     if (!historico || historico.length === 0) {
@@ -52,7 +65,7 @@ export function atualizarExtratoDisplay(historico) {
     });
 }
 
-export function atualizarPaginacao(totalPages, currentPage) {
+export function atualizarPaginacao(totalPages, currentPage, paginacaoContainer, onPageClick) {
     paginacaoContainer.innerHTML = '';
     if (totalPages <= 1) return;
     const prevLink = document.createElement('a');
@@ -63,7 +76,7 @@ export function atualizarPaginacao(totalPages, currentPage) {
     } else {
         prevLink.addEventListener('click', (e) => {
             e.preventDefault();
-            carregarDadosMatricula(currentPage - 1);
+            onPageClick(currentPage - 1);
         });
    }
     paginacaoContainer.appendChild(prevLink);
@@ -76,7 +89,7 @@ export function atualizarPaginacao(totalPages, currentPage) {
         }
        pageLink.addEventListener('click', (e) => {
             e.preventDefault();
-            carregarDadosMatricula(i);
+            onPageClick(i);
         });
         paginacaoContainer.appendChild(pageLink);
    }
@@ -89,8 +102,16 @@ export function atualizarPaginacao(totalPages, currentPage) {
     } else {
         nextLink.addEventListener('click', (e) => {
          e.preventDefault();
-         carregarDadosMatricula(currentPage + 1);
+         onPageClick(currentPage + 1);
        });
     }
     paginacaoContainer.appendChild(nextLink);
+}
+
+export function limparDashboard(elements) {
+    const { saldoDisplay, extratoDados, paginacaoContainer } = elements;
+    saldoDisplay.textContent = 'Informe sua matrícula para visualizar seu saldo';
+    saldoDisplay.style.backgroundColor = 'var(--primaria)';
+    extratoDados.innerHTML = '<tr><td colspan="3">Nenhum histórico para exibir.</td></tr>';
+    paginacaoContainer.innerHTML = '';
 }

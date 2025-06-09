@@ -14,10 +14,20 @@
         </div>
         <div class="user-info">
             <i class="fa-solid fa-user"></i>
-            <div class="matricula-info">
+            <div id = 'login-form' class="matricula-info">
+                <label for="matricula-input">Matrícula:</label>
                 <input type="text" id="matricula-input" placeholder="Digite sua matrícula">
                 <button id="btn-carregar-matricula" aria-label="Carregar Matrícula">
                     <i class="fa-solid fa-rotate-right"></i>
+                </button>
+            </div>
+            <div id="user-display" class="matricula-info" style="display: none;">
+                <div class="matricula-text">
+                    <span>Matrícula:</span>
+                    <span id="matricula-logada"></span>
+                </div>
+                <button id="btn-sair">
+                    <i class="fa-solid fa-right-from-bracket"></i>Sair
                 </button>
             </div>
         </div>
@@ -27,7 +37,7 @@
         <div id="dashboard">
             <div class="dashboard-header">
                 <div class="saldo"> Informe sua matrícula para visualizar seu saldo</div>
-                <button class="btn-recarga-main" id="btn-ir-recarga">Recarga</button>
+                <button class="btn-recarga-main" id="btn-ir-recarga" style="display: none;">Recarga</button>
             </div>
 
             <div class="extrato">
@@ -46,7 +56,7 @@
         </div>
     </main>
 
-    <script type="module" src="../js/main.js"></script>
+    <script type="module" src="/js/main.js"></script>
     
 </body>
 </html>

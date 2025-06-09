@@ -1,5 +1,5 @@
-import { fetchUserData } from "./api";
-import { atualizarExtratoDisplay, atualizarSaldoDisplay, atualizarPaginacao } from "./ui";
+import { fetchUserData } from "./api.js";
+import { atualizarHeaderUI, atualizarExtratoDisplay, atualizarSaldoDisplay, atualizarPaginacao, limparDashboard } from "./ui.js";
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -15,16 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSair: document.getElementById('btn-sair'),
     };
     
-    async function carregarDadosMatricula(page=1) {
-        const matricula = matriculaInput.value.trim();
+    async function carregarDados(page=1) {
+        const matricula = elements.matriculaInput.value.trim();
         if (!matricula) {
             alert("Por favor, digite uma matrícula.");
             return;
         }
 
-        saldoDisplay.textContent = "Carregando saldo...";
-        extratoDados.textContent = `Carregando histórico...`;
-        paginacaoContainer.innerHTML = '';
+        elements.saldoDisplay.textContent = "Carregando saldo...";
+        elements.extratoDados.textContent = `Carregando histórico...`;
+        elements.paginacaoContainer.innerHTML = '';
 
         try {
             const { dadosSaldo, dadosHistorico } = await fetchUserData(matricula, page);
@@ -45,10 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
         limparDashboard(elements);
     }
 
-    // 3. Adiciona os Event Listeners
     elements.btnCarregarMatricula.addEventListener('click', () => carregarDados(1));
-    elements.matriculaInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') carregarDados(1);
-    });
     elements.btnSair.addEventListener('click', deslogar);
 });
