@@ -6,10 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const matriculaInput = document.getElementById('matricula-input');
     const btnCarregarMatricula = document.getElementById('btn-carregar-matricula');
     const extratoDados = document.getElementById('extrato-dados');
+    const paginacaoContainer = document.getElementById('paginacao-container');
+
 
     const formatarMoeda = (valor) => {
         if (typeof valor !== 'number') return 'R$ --,--';
-        return `R$ ${valor.toFixed(2).replace('.', ',')}`;
+        return valor.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
     }
 
     const formatarData = (dataString) => {
@@ -24,9 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function atualizarSaldoDisplay(novoSaldo) {
+        if(typeof novoSaldo!== 'number'){
+            saldoDisplay.textContent = "Saldo indisponível";
+            return;
+        }
+        saldoDisplay.textContent = `Saldo Atual: ${formatarMoeda(novoSaldo)}`;
+
         if(novoSaldo<0){saldoDisplay.style.backgroundColor = '#FF0B48'}
         else{saldoDisplay.style.backgroundColor='#0CC2AA'}
-        saldoDisplay.textContent = formatarMoeda(novoSaldo);
     }   
 
     function atualizarExtratoDisplay(historico) {
@@ -51,22 +61,66 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function atualizarPaginacao(totalPages, currentPage) {
+        paginacaoContainer.innerHTML = '';
+        if (totalPages <= 1) return;
 
+        const prevLink = document.createElement('a');
+        prevLink.href = '#';
+        prevLink.innerHTML = '&laquo; Anterior';
+        if (currentPage === 1) {
+            prevLink.classList.add('disabled');
+        } else {
+            prevLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                carregarDadosMatricula(currentPage - 1);
+            });
+        }
+        paginacaoContainer.appendChild(prevLink);
 
-    async function carregarDadosMatricula() {
+        for (let i = 1; i <= totalPages; i++) {
+            const pageLink = document.createElement('a');
+            pageLink.href = '#';
+            pageLink.textContent = i;
+            if (i === currentPage) {
+                pageLink.classList.add('active');
+            }
+            pageLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                carregarDadosMatricula(i);
+            });
+            paginacaoContainer.appendChild(pageLink);
+        }
+
+        const nextLink = document.createElement('a');
+        nextLink.href = '#';
+        nextLink.innerHTML = 'Próxima &raquo;';
+        if (currentPage === totalPages) {
+            nextLink.classList.add('disabled');
+        } else {
+            nextLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                carregarDadosMatricula(currentPage + 1);
+            });
+        }
+        paginacaoContainer.appendChild(nextLink);
+    }
+
+    async function carregarDadosMatricula(page=1) {
         const matricula = matriculaInput.value.trim();
         if (!matricula) {
             alert("Por favor, digite uma matrícula.");
             return;
         }
 
-        saldoDisplay.textContent = "Carregando...";
-        extratoDados.textContent = '<tr><td colspan="3">Carregando histórico...</td></tr>';
+        saldoDisplay.textContent = "Carregando saldo...";
+        extratoDados.textContent = `Carregando histórico...`;
+        paginacaoContainer.innerHTML = '';
 
         try {
             const [resSaldo, resHistorico] = await Promise.all([
                 fetch(`/recargas/saldo/${matricula}`),
-                fetch(`/recargas/historico/${matricula}`)
+                fetch(`/recargas/historico/${matricula}?page=${page}`)
             ]);
 
             const dadosSaldo = await resSaldo.json();
@@ -80,7 +134,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             atualizarSaldoDisplay(dadosSaldo.saldo); 
-            atualizarExtratoDisplay(dadosHistorico.items);           
+            atualizarExtratoDisplay(dadosHistorico.items);
+            atualizarPaginacao(dadosHistorico.totalPagesPages, dadosHistorico.currentPage);
+          
         } catch (error) {
             console.error("Erro:", error);
             saldoDisplayExtrato.textContent = "Matrícula inválida";
@@ -89,11 +145,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    btnCarregarMatricula.addEventListener('click', carregarDadosMatricula);
-
-    matriculaInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            carregarDadosMatricula();
-        }
-    });
+    btnCarregarMatricula.addEventListener('click', () => carregarDadosMatricula(1));
 });
