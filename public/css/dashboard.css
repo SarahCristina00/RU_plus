@@ -1,11 +1,11 @@
 .dashboard-header{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px var(--fundo);
-    margin-bottom: 20px;  
+    margin-bottom: 30px;  
 }
 
 .saldo {
@@ -29,6 +29,7 @@
 }
 
 .extrato{
+    margin: 30px;
     background-color:#ffffff;
     padding:20px;
     border-radius:8px;
