@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RU+ | Sistema de Recarga</title>
+            <link rel="shortcut icon" href="src\Logo.png" type="image/icon">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
@@ -54,6 +55,40 @@
                     <tbody id="extrato-dados"></tbody>
                 </table>
                 <div class="paginacao" id="paginacao-container"></div>
+            </div>
+        </div>
+
+        <div id="recarga" style="display: none;">
+            <div class="recarga-container">
+                <h2>Recarga do Cartão do Restaurante Universitário</h2>
+                <div class="valor">
+                    <div class="input-valor">
+                        <label for="valor-recarga">Informe o valor desejado</label>
+                        <input type="text" id="valor-recarga" placeholder="Digite o valor com vírgula">
+                    </div>
+                    <div class="saldo"></div>
+                </div>
+                <div class="pagamento">
+                    <label>Selecione a forma de pagamento</label>
+                    <div class="forma-pagamento">
+                        <button class="btn-pagamento">
+                            <i class="fa-solid fa-credit-card"></i>
+                            <span>Cartão de Crédito</span>
+                        </button>
+                        <button class="btn-pagamento">
+                            <i class="fa-regular fa-credit-card"></i>
+                            <span>Cartão de Débito</span>
+                        </button>
+                        <button class="btn-pagamento">
+                            <i class="fa-brands fa-pix"></i>
+                            <span>PIX</span>
+                        </button>
+                    </div>
+                </div>
+                <button id="btn-recarregar-agora">Recarregar Agora</button>
+                <button id="btn-voltar-dashboard" class="btn-link">Voltar para Tela Inicial</button> 
+
+
             </div>
         </div>
     </main>

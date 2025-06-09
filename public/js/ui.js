@@ -19,6 +19,38 @@ const formatarData = (dataString) => {
     });
 };
 
+export function mostrarDashboard(elements) {
+    if (elements.recargaView) elements.recargaView.style.display = 'none';
+    if (elements.dashboardView) elements.dashboardView.style.display = 'block';
+}
+
+export function mostrarRecarga(elements) {
+    if (elements.dashboardView) elements.dashboardView.style.display = 'none';
+    if (elements.recargaView) elements.recargaView.style.display = 'flex';
+}
+
+export function prepararTelaRecarga(saldo, elements) {
+    const { saldoRecargaDisplay, opcoesPagamento } = elements;
+
+    saldoRecargaDisplay.textContent = `Saldo Atual: ${formatarMoeda(saldo)}`;
+
+    const botoes = opcoesPagamento.querySelectorAll('.btn-pagamento');
+    botoes.forEach(botao => {
+        botao.addEventListener('click', () => {
+            botoes.forEach(b => b.classList.remove('selected'));
+            botao.classList.add('selected');
+        });
+    });
+}
+
+export function mostrarNotificacao(mensagem, container) {
+    container.textContent = mensagem;
+    container.style.display = 'block';
+    setTimeout(() => {
+        container.style.display = 'none';
+    }, 5000);
+}
+
 export function atualizarHeaderUI(matricula, elements) {
     const { loginForm, userDisplay, matriculaLogadaSpan, matriculaInput } = elements;
     if (matricula) {
