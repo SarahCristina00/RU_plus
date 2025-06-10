@@ -131,3 +131,32 @@
     margin-top: 20px;
     box-sizing: border-box;
 }
+
+.opcao-pagamento {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 750px;
+}
+
+#pix-chave {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--primaria);
+    font-size: 16px;
+}
+
+.opcao-pagamento label {
+    font-weight: 600;
+    color: var(--primaria);
+}
+
+.opcao-pagamento input {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--primaria);
+    font-size: 16px;
+    color: var(--primaria);
+}
