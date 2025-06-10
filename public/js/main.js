@@ -71,6 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
             mostrarNotificacao(resultado.mensagem, elements.notificacaoSucesso);
             await carregarDados(); 
             mostrarDashboard(elements);
+
+            
         } catch (error) {
             alert(error.message);
         }
@@ -81,4 +83,67 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.btnIrRecarga.addEventListener('click', () => mostrarRecarga(elements));
     elements.btnVoltarDashboard.addEventListener('click', () => mostrarDashboard(elements));
     elements.btnRecarregarAgora.addEventListener('click', handleRecarregar);
+
+    const botoesPagamento = document.querySelectorAll('.btn-pagamento');
+const cartaoForm = document.getElementById('cartao-form');
+const pixInfo = document.getElementById('pix-info');
+
+botoesPagamento.forEach(botao => {
+    botao.addEventListener('click', () => {
+        botoesPagamento.forEach(b => b.classList.remove('selected'));
+        botao.classList.add('selected');
+
+        const tipo = botao.getAttribute('data-pagamento');
+
+        if (tipo === 'credito' || tipo === 'debito') {
+            cartaoForm.style.display = 'flex';
+            pixInfo.style.display = 'none';
+        } else if (tipo === 'pix') {
+            cartaoForm.style.display = 'none';
+            pixInfo.style.display = 'flex';
+        }
+    });
+});
+
+function copiarChavePIX() {
+    const pixChave = document.getElementById('pix-chave');
+    pixChave.select();
+    pixChave.setSelectionRange(0, 99999); // Para dispositivos móveis
+
+    navigator.clipboard.writeText(pixChave.value)
+      .then(() => alert('Chave PIX copiada!'))
+      .catch(() => alert('Falha ao copiar a chave PIX.'));
+}
+   document.getElementById('btn-recarregar-agora').addEventListener('click', () => {
+    const valorInput = document.getElementById('valor-recarga').value;
+    const valor = parseFloat(valorInput.replace(',', '.'));
+    const metodo = document.querySelector('.btn-pagamento.selected')?.textContent.trim();
+    const matricula = document.getElementById('matricula-logada').textContent; // Pegando a matrícula do usuário logado
+
+    if (!valor || valor <= 0) {
+        alert('Informe um valor válido para recarga.');
+        return;
+    }
+    if (!metodo) {
+        alert('Selecione a forma de pagamento.');
+        return;
+    }
+
+    // Criação do objeto de dados do comprovante
+    const dadosRecarga = {
+        nome: matricula, // Usando o número da matrícula como nome no comprovante
+        valor,
+        dataHora: new Date().toLocaleString('pt-BR'),
+        metodoPagamento: metodo,
+        codigoTransacao: 'TX' + Math.floor(Math.random() * 1000000000)
+    };
+
+    // Salvando os dados no localStorage para serem lidos pelo comprovante.html
+    localStorage.setItem('dadosComprovante', JSON.stringify(dadosRecarga));
+
+    // Abrindo o comprovante
+    window.open('Comprovante.html', '_blank');
+});
+
+
 });
