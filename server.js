@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const recargaRoutes = require("../routes/recargas");
+const recargaRoutes = require("./routes/recargas");
 
 app.use(express.static("public"));
 
