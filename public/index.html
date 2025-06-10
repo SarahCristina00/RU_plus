@@ -70,20 +70,41 @@
                 <div class="pagamento">
                     <label>Selecione a forma de pagamento</label>
                     <div class="forma-pagamento">
-                        <button class="btn-pagamento">
+                        <button class="btn-pagamento" data-pagamento="credito">
                             <i class="fa-solid fa-credit-card"></i>
                             <span>Cartão de Crédito</span>
                         </button>
-                        <button class="btn-pagamento">
+                        <button class="btn-pagamento" data-pagamento="debito">
                             <i class="fa-regular fa-credit-card"></i>
                             <span>Cartão de Débito</span>
                         </button>
-                        <button class="btn-pagamento">
+                        <button class="btn-pagamento" data-pagamento="pix">
                             <i class="fa-brands fa-pix"></i>
                             <span>PIX</span>
                         </button>
                     </div>
                 </div>
+                <!-- Formulário Cartão Crédito/Débito -->
+                    <div id="cartao-form" class="opcao-pagamento" style="display: none; flex-direction: column; gap: 10px;">
+                        <label for="nome-cartao">Nome no Cartão:</label>
+                        <input id="nome-cartao" type="text" placeholder="Nome impresso no cartão">
+
+                        <label for="numero-cartao">Número do Cartão:</label>
+                        <input id="numero-cartao" type="text" placeholder="Número do cartão">
+
+                        <label for="validade-cartao">Validade:</label>
+                        <input id="validade-cartao" type="text" placeholder="MM/AA">
+
+                        <label for="cvv-cartao">CVV:</label>
+                        <input id="cvv-cartao" type="text" placeholder="CVV">
+                    </div>
+
+                    <!-- Opção PIX -->
+                    <div id="pix-info" class="opcao-pagamento" style="display: none; flex-direction: column; gap: 10px;">
+                        <p>Use a chave abaixo para realizar a recarga via PIX:</p>
+                        <input type="text" id="pix-chave" value="pix@exemplo.com" readonly>
+                        <button type="button" onclick="copiarChavePIX()">Copiar Chave PIX</button>
+                    </div>
                 <button id="btn-recarregar-agora">Recarregar Agora</button>
                 <button id="btn-voltar-dashboard" class="btn-link">Voltar para Tela Inicial</button> 
 
