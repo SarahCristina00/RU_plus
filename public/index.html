@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>RU+ | Sistema de Recarga</title>
-        <link rel="shortcut icon" href="src\Logo.png" type="image/icon" />
+        <link rel="shortcut icon" href="src/Logo.png" type="image/png" />
         <link rel="stylesheet" href="css/style.css" />
         <link
             rel="stylesheet"
@@ -12,16 +12,20 @@
         />
     </head>
     <body>
+        <!-- Cabeçalho -->
         <header>
             <div class="header-logo">
-                <img src="src\Logo.png" alt="logo" />
-                <span class="logo-titulo"
-                    >Sistema de Recarga do Cartão <br />do Restaurante
-                    Universitário</span
-                >
+                <img src="src/Logo.png" alt="Logo RU+" />
+                <span class="logo-titulo">
+                    Sistema de Recarga do Cartão <br />do Restaurante
+                    Universitário
+                </span>
             </div>
+
             <div class="user-info">
                 <i class="fa-solid fa-user"></i>
+
+                <!-- Formulário de login -->
                 <div id="login-form" class="matricula-info">
                     <label for="matricula-input">Matrícula:</label>
                     <input
@@ -36,6 +40,8 @@
                         <i class="fa-solid fa-rotate-right"></i>
                     </button>
                 </div>
+
+                <!-- Exibição do usuário logado -->
                 <div
                     id="user-display"
                     class="matricula-info"
@@ -45,15 +51,17 @@
                         <span>Matrícula:</span>
                         <span id="matricula-logada"></span>
                     </div>
-                    <button id="btn-sair">
-                        <i class="fa-solid fa-right-from-bracket"></i>Sair
+                    <button id="btn-sair" type="button">
+                        <i class="fa-solid fa-right-from-bracket"></i> Sair
                     </button>
                 </div>
             </div>
         </header>
 
+        <!-- Conteúdo principal -->
         <main>
-            <div id="dashboard">
+            <!-- Dashboard -->
+            <section id="dashboard">
                 <div class="dashboard-header">
                     <div class="saldo">
                         Informe sua matrícula para visualizar seu saldo
@@ -67,6 +75,7 @@
                     </button>
                 </div>
 
+                <!-- Extrato -->
                 <div class="extrato">
                     <table class="extrato-tabela">
                         <thead>
@@ -80,11 +89,14 @@
                     </table>
                     <div class="paginacao" id="paginacao-container"></div>
                 </div>
-            </div>
+            </section>
 
-            <div id="recarga" style="display: none">
+            <!-- Tela de Recarga -->
+            <section id="recarga" style="display: none">
                 <div class="recarga-container">
                     <h2>Recarga do Cartão do Restaurante Universitário</h2>
+
+                    <!-- Valor da recarga -->
                     <div class="valor">
                         <div class="input-valor">
                             <label for="valor-recarga"
@@ -97,6 +109,8 @@
                             />
                         </div>
                     </div>
+
+                    <!-- Métodos de pagamento -->
                     <div class="pagamento">
                         <label>Selecione a forma de pagamento</label>
                         <div class="forma-pagamento">
@@ -104,27 +118,27 @@
                                 class="btn-pagamento"
                                 data-pagamento="credito"
                             >
-                                <i class="fa-solid fa-credit-card"></i>
-                                <span>Cartão de Crédito</span>
+                                <i class="fa-solid fa-credit-card"></i> Cartão
+                                de Crédito
                             </button>
                             <button
                                 class="btn-pagamento"
                                 data-pagamento="debito"
                             >
-                                <i class="fa-regular fa-credit-card"></i>
-                                <span>Cartão de Débito</span>
+                                <i class="fa-regular fa-credit-card"></i> Cartão
+                                de Débito
                             </button>
                             <button class="btn-pagamento" data-pagamento="pix">
-                                <i class="fa-brands fa-pix"></i>
-                                <span>PIX</span>
+                                <i class="fa-brands fa-pix"></i> PIX
                             </button>
                         </div>
                     </div>
+
                     <!-- Formulário Cartão Crédito/Débito -->
                     <div
                         id="cartao-form"
                         class="opcao-pagamento"
-                        style="display: none; flex-direction: column; gap: 10px"
+                        style="display: none"
                     >
                         <label for="nome-cartao">Nome no Cartão:</label>
                         <input
@@ -155,7 +169,7 @@
                     <div
                         id="pix-info"
                         class="opcao-pagamento"
-                        style="display: none; flex-direction: column; gap: 10px"
+                        style="display: none"
                     >
                         <p>
                             Use a chave abaixo para realizar a recarga via PIX:
@@ -170,14 +184,36 @@
                             Copiar Chave PIX
                         </button>
                     </div>
-                    <button id="btn-recarregar-agora">Recarregar Agora</button>
-                    <button id="btn-voltar-dashboard" class="btn-link">
+
+                    <!-- Botões principais -->
+                    <button type="button" id="btn-recarregar-agora">
+                        Recarregar Agora
+                    </button>
+                    <button
+                        type="button"
+                        id="btn-voltar-dashboard"
+                        class="btn-link"
+                    >
                         Voltar para Tela Inicial
                     </button>
                 </div>
-            </div>
+            </section>
         </main>
 
+        <!-- Scripts -->
         <script type="module" src="/js/main.js"></script>
+        <script>
+            // Torna a função de copiar PIX acessível globalmente
+            function copiarChavePIX() {
+                const pixChave = document.getElementById("pix-chave");
+                pixChave.select();
+                pixChave.setSelectionRange(0, 99999);
+                navigator.clipboard
+                    .writeText(pixChave.value)
+                    .then(() => alert("Chave PIX copiada!"))
+                    .catch(() => alert("Falha ao copiar a chave PIX."));
+            }
+            window.copiarChavePIX = copiarChavePIX;
+        </script>
     </body>
 </html>

@@ -6,11 +6,14 @@ const ControladorRecarga = require("../controllers/ControladorRecarga");
 router.get("/saldo/:matricula", (req, res) =>
   ControladorRecarga.getSaldo(req, res),
 );
+
 router.get("/historico/:matricula", (req, res) =>
   ControladorRecarga.getHistorico(req, res),
 );
-router.post("/recarga", (req, res) =>
-  ControladorRecarga.realizarRecarga(req, res),
+
+router.post(
+  "/recarga",
+  (req, res) => ControladorRecarga.recarregar(req, res), // <-- ALTERADO
 );
 
 module.exports = router;

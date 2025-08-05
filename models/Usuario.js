@@ -18,21 +18,21 @@ class Usuario {
         this.saldo += valor;
     }
 
-    getHistorico(pagina = 1, limite = 10) {
+    getHistorico(page = 1, limit = 10) {
         const historicoOrdenado = this.historico.sort(
             (a, b) => new Date(b.dataHora) - new Date(a.dataHora),
         );
-        const totalItens = historicoOrdenado.length;
-        const totalPaginas = Math.ceil(totalItens / limite);
-        const inicio = (pagina - 1) * limite;
-        const fim = pagina * limite;
-        const itens = historicoOrdenado.slice(inicio, fim);
+        const totalItems = historicoOrdenado.length;
+        const totalPages = Math.ceil(totalItems / limit);
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const items = historicoOrdenado.slice(startIndex, endIndex);
 
         return {
-            itens,
-            totalItens,
-            totalPaginas,
-            paginaAtual: pagina,
+            items,
+            totalItems,
+            totalPages,
+            currentPage: page,
         };
     }
 }

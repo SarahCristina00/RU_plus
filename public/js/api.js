@@ -1,51 +1,46 @@
-//conexão com o servidor
- 
-export async function fetchUserData(matricula, page = 1) {
+// Conexão com o servidor
+export async function buscarDadosUsuario(matricula, pagina = 1) {
     try {
-        const [resSaldo, resHistorico] = await Promise.all([
+        const [respostaSaldo, respostaHistorico] = await Promise.all([
             fetch(`/recargas/saldo/${matricula}`),
-            fetch(`/recargas/historico/${matricula}?page=${page}`)
+            fetch(`/recargas/historico/${matricula}?page=${pagina}`),
         ]);
 
-        if (!resSaldo.ok || !resHistorico.ok) {
-            throw new Error('Não foi possível carregar os dados. Verifique a matrícula e tente novamente.');
+        if (!respostaSaldo.ok || !respostaHistorico.ok) {
+            throw new Error(
+                "Não foi possível carregar os dados. Verifique a matrícula e tente novamente.",
+            );
         }
 
-        const dadosSaldo = await resSaldo.json();
-        const dadosHistorico = await resHistorico.json();
+        const dadosSaldo = await respostaSaldo.json();
+        const dadosHistorico = await respostaHistorico.json();
 
         return { dadosSaldo, dadosHistorico };
-
-    } catch (error) {
-        console.error("Erro na API:", error);
-        throw error;
+    } catch (erro) {
+        console.error("Erro na API:", erro);
+        throw erro;
     }
 }
 
-//recarga para o servidor
-export async function realizarRecarga(matricula, valor, metodoPagamento) {
+// Enviar recarga ao servidor
+export async function enviarRecarga(matricula, valor, metodoPagamento) {
     try {
-        const response = await fetch('/recargas/recarga', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                matricula: matricula,
-                valor: valor,
-                metodo: metodoPagamento,
-            }),
+        const resposta = await fetch("/recargas/recarga", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ matricula, valor, metodo: metodoPagamento }),
         });
 
-        if (!response.ok) {
-            const erro = await response.json();
-            throw new Error(erro.mensagem || 'Não foi possível realizar a recarga.');
+        if (!resposta.ok) {
+            const erro = await resposta.json();
+            throw new Error(
+                erro.mensagem || "Não foi possível realizar a recarga.",
+            );
         }
 
-        return await response.json();
-
-    } catch (error) {
-        console.error("Erro ao realizar recarga:", error);
-        throw error;
+        return await resposta.json();
+    } catch (erro) {
+        console.error("Erro ao realizar recarga:", erro);
+        throw erro;
     }
 }

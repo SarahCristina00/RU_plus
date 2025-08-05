@@ -1,9 +1,18 @@
-import { fetchUserData, realizarRecarga } from "./api.js";
-import { mostrarDashboard, mostrarRecarga, prepararTelaRecarga, mostrarNotificacao,atualizarHeaderUI, atualizarExtratoDisplay, atualizarSaldoDisplay, atualizarPaginacao, limparDashboard } from "./ui.js";
+import { buscarDadosUsuario, enviarRecarga } from "./api.js";
+import {
+    mostrarDashboard,
+    mostrarRecarga,
+    prepararTelaRecarga,
+    mostrarNotificacao,
+    atualizarHeaderUI,
+    atualizarExtratoDisplay,
+    atualizarSaldoDisplay,
+    atualizarPaginacao,
+    limparDashboard
+} from "./ui.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-
-    const elements = {
+    const elementos = {
         matriculaInput: document.getElementById('matricula-input'),
         btnCarregarMatricula: document.getElementById('btn-carregar-matricula'),
         saldoDisplay: document.querySelector('#dashboard .saldo'),
@@ -21,129 +30,114 @@ document.addEventListener('DOMContentLoaded', () => {
         opcoesPagamento: document.querySelector('.forma-pagamento'),
         btnRecarregarAgora: document.getElementById('btn-recarregar-agora'),
         notificacaoSucesso: document.querySelector('.notificacao-sucesso'),
+        cartaoForm: document.getElementById('cartao-form'),
+        pixInfo: document.getElementById('pix-info')
     };
-    
-    async function carregarDados(page=1) {
-        const matricula = elements.matriculaInput.value.trim();
+
+    // === FUNÇÃO PARA CARREGAR DADOS ===
+    async function carregarDados(pagina = 1) {
+        const matricula = elementos.matriculaInput.value.trim();
         if (!matricula) {
             alert("Por favor, digite uma matrícula.");
             return;
         }
 
-        elements.saldoDisplay.textContent = "Carregando saldo...";
-        elements.extratoDados.textContent = `Carregando histórico...`;
-        elements.paginacaoContainer.innerHTML = '';
+        elementos.saldoDisplay.textContent = "Carregando saldo...";
+        elementos.extratoDados.textContent = "Carregando histórico...";
+        elementos.paginacaoContainer.innerHTML = '';
 
         try {
-            const { dadosSaldo, dadosHistorico } = await fetchUserData(matricula, page);
-            
-            atualizarHeaderUI(matricula, elements);
-            atualizarSaldoDisplay(dadosSaldo.saldo, elements.saldoDisplay);
-            atualizarExtratoDisplay(dadosHistorico.items, elements.extratoDados);
-            atualizarPaginacao(dadosHistorico.totalPages, dadosHistorico.currentPage, elements.paginacaoContainer, carregarDados);
+            const { dadosSaldo, dadosHistorico } = await buscarDadosUsuario(matricula, pagina);
 
-            prepararTelaRecarga(dadosSaldo.saldo, elements);
+            atualizarHeaderUI(matricula, elementos);
+            atualizarSaldoDisplay(dadosSaldo.saldo, elementos.saldoDisplay);
+            atualizarExtratoDisplay(dadosHistorico.items, elementos.extratoDados);
+            atualizarPaginacao(dadosHistorico.totalPages, dadosHistorico.currentPage, elementos.paginacaoContainer, carregarDados);
 
-            if (elements.btnIrRecarga) elements.btnIrRecarga.style.display = 'block';
+            prepararTelaRecarga(dadosSaldo.saldo, elementos);
 
-        } catch (error) {
-            alert(error.message);
+            if (elementos.btnIrRecarga) elementos.btnIrRecarga.style.display = 'block';
+
+        } catch (erro) {
+            alert(erro.message);
             deslogar();
         }
     }
 
+    // === FUNÇÃO PARA SAIR ===
     function deslogar() {
-        atualizarHeaderUI(null, elements);
-        limparDashboard(elements);
-        if (elements.btnIrRecarga) elements.btnIrRecarga.style.display = 'none';
+        atualizarHeaderUI(null, elementos);
+        limparDashboard(elementos);
+        if (elementos.btnIrRecarga) elementos.btnIrRecarga.style.display = 'none';
     }
 
-        async function handleRecarregar() {
-        const matricula = elements.matriculaLogadaSpan.textContent;
-        const valor = parseFloat(elements.valorRecargaInput.value.replace(',', '.'));
-        const metodoPagamento = elements.opcoesPagamento.querySelector('.selected')?.textContent.trim();
+    // === FUNÇÃO PARA PROCESSAR RECARGA ===
+    async function processarRecarga() {
+        const matricula = elementos.matriculaLogadaSpan.textContent;
+        const valor = parseFloat(elementos.valorRecargaInput.value.replace(',', '.'));
+        const metodoPagamento = elementos.opcoesPagamento.querySelector('.selected')?.textContent.trim();
 
         if (isNaN(valor) || valor <= 0) return alert('Por favor, insira um valor de recarga válido.');
         if (!metodoPagamento) return alert('Por favor, selecione uma forma de pagamento.');
 
         try {
-            const resultado = await realizarRecarga(matricula, valor, metodoPagamento);
-            mostrarNotificacao(resultado.mensagem, elements.notificacaoSucesso);
-            await carregarDados(); 
-            mostrarDashboard(elements);
+            // Enviar recarga para o servidor
+            const resultado = await enviarRecarga(matricula, valor, metodoPagamento);
 
-            
-        } catch (error) {
-            alert(error.message);
+            // Mostrar notificação
+            mostrarNotificacao(resultado.mensagem, elementos.notificacaoSucesso);
+
+            // Salvar dados para o comprovante
+            const dadosRecarga = {
+                nome: matricula,
+                valor,
+                dataHora: new Date().toLocaleString('pt-BR'),
+                metodoPagamento,
+                codigoTransacao: 'TX' + Math.floor(Math.random() * 1000000000)
+            };
+            localStorage.setItem('dadosComprovante', JSON.stringify(dadosRecarga));
+
+            // Atualizar dashboard e abrir comprovante
+            await carregarDados();
+            mostrarDashboard(elementos);
+            window.open('Comprovante.html', '_blank');
+
+        } catch (erro) {
+            alert(erro.message);
         }
     }
 
-    elements.btnCarregarMatricula.addEventListener('click', () => carregarDados(1));
-    elements.btnSair.addEventListener('click', deslogar);
-    elements.btnIrRecarga.addEventListener('click', () => mostrarRecarga(elements));
-    elements.btnVoltarDashboard.addEventListener('click', () => mostrarDashboard(elements));
-    elements.btnRecarregarAgora.addEventListener('click', handleRecarregar);
+    // === BOTÕES E EVENTOS ===
+    elementos.btnCarregarMatricula.addEventListener('click', () => carregarDados(1));
+    elementos.btnSair.addEventListener('click', deslogar);
+    elementos.btnIrRecarga.addEventListener('click', () => mostrarRecarga(elementos));
+    elementos.btnVoltarDashboard.addEventListener('click', () => mostrarDashboard(elementos));
+    elementos.btnRecarregarAgora.addEventListener('click', processarRecarga);
 
-    const botoesPagamento = document.querySelectorAll('.btn-pagamento');
-const cartaoForm = document.getElementById('cartao-form');
-const pixInfo = document.getElementById('pix-info');
+    // === SELEÇÃO DE MÉTODO DE PAGAMENTO ===
+    document.querySelectorAll('.btn-pagamento').forEach(botao => {
+        botao.addEventListener('click', () => {
+            document.querySelectorAll('.btn-pagamento').forEach(b => b.classList.remove('selected'));
+            botao.classList.add('selected');
 
-botoesPagamento.forEach(botao => {
-    botao.addEventListener('click', () => {
-        botoesPagamento.forEach(b => b.classList.remove('selected'));
-        botao.classList.add('selected');
-
-        const tipo = botao.getAttribute('data-pagamento');
-
-        if (tipo === 'credito' || tipo === 'debito') {
-            cartaoForm.style.display = 'flex';
-            pixInfo.style.display = 'none';
-        } else if (tipo === 'pix') {
-            cartaoForm.style.display = 'none';
-            pixInfo.style.display = 'flex';
-        }
+            const tipo = botao.getAttribute('data-pagamento');
+            if (tipo === 'credito' || tipo === 'debito') {
+                elementos.cartaoForm.style.display = 'flex';
+                elementos.pixInfo.style.display = 'none';
+            } else if (tipo === 'pix') {
+                elementos.cartaoForm.style.display = 'none';
+                elementos.pixInfo.style.display = 'flex';
+            }
+        });
     });
-});
 
-function copiarChavePIX() {
-    const pixChave = document.getElementById('pix-chave');
-    pixChave.select();
-    pixChave.setSelectionRange(0, 99999); // Para dispositivos móveis
-
-    navigator.clipboard.writeText(pixChave.value)
-      .then(() => alert('Chave PIX copiada!'))
-      .catch(() => alert('Falha ao copiar a chave PIX.'));
-}
-   document.getElementById('btn-recarregar-agora').addEventListener('click', () => {
-    const valorInput = document.getElementById('valor-recarga').value;
-    const valor = parseFloat(valorInput.replace(',', '.'));
-    const metodo = document.querySelector('.btn-pagamento.selected')?.textContent.trim();
-    const matricula = document.getElementById('matricula-logada').textContent; // Pegando a matrícula do usuário logado
-
-    if (!valor || valor <= 0) {
-        alert('Informe um valor válido para recarga.');
-        return;
-    }
-    if (!metodo) {
-        alert('Selecione a forma de pagamento.');
-        return;
-    }
-
-    // Criação do objeto de dados do comprovante
-    const dadosRecarga = {
-        nome: matricula, // Usando o número da matrícula como nome no comprovante
-        valor,
-        dataHora: new Date().toLocaleString('pt-BR'),
-        metodoPagamento: metodo,
-        codigoTransacao: 'TX' + Math.floor(Math.random() * 1000000000)
+    // === FUNÇÃO COPIAR CHAVE PIX ===
+    window.copiarChavePIX = function () {
+        const pixChave = document.getElementById('pix-chave');
+        pixChave.select();
+        pixChave.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(pixChave.value)
+            .then(() => alert('Chave PIX copiada!'))
+            .catch(() => alert('Falha ao copiar a chave PIX.'));
     };
-
-    // Salvando os dados no localStorage para serem lidos pelo comprovante.html
-    localStorage.setItem('dadosComprovante', JSON.stringify(dadosRecarga));
-
-    // Abrindo o comprovante
-    window.open('Comprovante.html', '_blank');
-});
-
-
 });
