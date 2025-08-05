@@ -1,6 +1,6 @@
 const Usuario = require("../models/Usuario");
 
-class RecargaController {
+class ControladorRecarga {
     constructor() {
         this.usuarios = {
             202376010: new Usuario("202376010", 30.0, [
@@ -25,7 +25,7 @@ class RecargaController {
         };
     }
 
-    getSaldo(req, res) {
+    get(req, res) {
         const { matricula } = req.params;
         const usuario = this.usuarios[matricula];
         if (!usuario)
@@ -42,7 +42,7 @@ class RecargaController {
         res.json(usuario.getHistorico(parseInt(page), parseInt(limit)));
     }
 
-    recarregar(req, res) {
+    realizarRecarga(req, res) {
         const { matricula, valor, metodo } = req.body;
         const usuario = this.usuarios[matricula];
         if (!usuario)
@@ -59,4 +59,4 @@ class RecargaController {
     }
 }
 
-module.exports = new RecargaController();
+module.exports = new ControladorRecarga();
