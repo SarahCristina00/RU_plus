@@ -1,119 +1,183 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU+ | Sistema de Recarga</title>
-            <link rel="shortcut icon" href="src\Logo.png" type="image/icon">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-</head>
-<body>
-    <header>
-        <div class="header-logo">
-            <img src="src\Logo.png" alt="logo">
-            <span class="logo-titulo">Sistema de Recarga do Cartão <br>do Restaurante Universitário</span>
-        </div>
-        <div class="user-info">
-            <i class="fa-solid fa-user"></i>
-            <div id = 'login-form' class="matricula-info">
-                <label for="matricula-input">Matrícula:</label>
-                <input type="text" id="matricula-input" placeholder="Digite sua matrícula">
-                <button id="btn-carregar-matricula" aria-label="Carregar Dados">
-                    <i class="fa-solid fa-rotate-right"></i>
-                </button>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>RU+ | Sistema de Recarga</title>
+        <link rel="shortcut icon" href="src\Logo.png" type="image/icon" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        />
+    </head>
+    <body>
+        <header>
+            <div class="header-logo">
+                <img src="src\Logo.png" alt="logo" />
+                <span class="logo-titulo"
+                    >Sistema de Recarga do Cartão <br />do Restaurante
+                    Universitário</span
+                >
             </div>
-            <div id="user-display" class="matricula-info" style="display: none;">
-                <div class="matricula-text">
-                    <span>Matrícula:</span>
-                    <span id="matricula-logada"></span>
+            <div class="user-info">
+                <i class="fa-solid fa-user"></i>
+                <div id="login-form" class="matricula-info">
+                    <label for="matricula-input">Matrícula:</label>
+                    <input
+                        type="text"
+                        id="matricula-input"
+                        placeholder="Digite sua matrícula"
+                    />
+                    <button
+                        id="btn-carregar-matricula"
+                        aria-label="Carregar Dados"
+                    >
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
                 </div>
-                <button id="btn-sair">
-                    <i class="fa-solid fa-right-from-bracket"></i>Sair
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <main>
-        <div id="dashboard">
-            <div class="dashboard-header">
-                <div class="saldo"> Informe sua matrícula para visualizar seu saldo</div>
-                <button class="btn-recarga-main" id="btn-ir-recarga" style="display: none;">Recarga</button>
-            </div>
-
-            <div class="extrato">
-                <table class="extrato-tabela">
-                    <thead>
-                        <tr>
-                            <th>Data e Hora</th>
-                            <th>Lançamento</th>
-                            <th>Valor</th>
-                        </tr>
-                    </thead>
-                    <tbody id="extrato-dados"></tbody>
-                </table>
-                <div class="paginacao" id="paginacao-container"></div>
-            </div>
-        </div>
-
-        <div id="recarga" style="display: none;">
-            <div class="recarga-container">
-                <h2>Recarga do Cartão do Restaurante Universitário</h2>
-                <div class="valor">
-                    <div class="input-valor">
-                        <label for="valor-recarga">Informe o valor desejado</label>
-                        <input type="text" id="valor-recarga" placeholder="Digite o valor com vírgula">
+                <div
+                    id="user-display"
+                    class="matricula-info"
+                    style="display: none"
+                >
+                    <div class="matricula-text">
+                        <span>Matrícula:</span>
+                        <span id="matricula-logada"></span>
                     </div>
+                    <button id="btn-sair">
+                        <i class="fa-solid fa-right-from-bracket"></i>Sair
+                    </button>
                 </div>
-                <div class="pagamento">
-                    <label>Selecione a forma de pagamento</label>
-                    <div class="forma-pagamento">
-                        <button class="btn-pagamento" data-pagamento="credito">
-                            <i class="fa-solid fa-credit-card"></i>
-                            <span>Cartão de Crédito</span>
-                        </button>
-                        <button class="btn-pagamento" data-pagamento="debito">
-                            <i class="fa-regular fa-credit-card"></i>
-                            <span>Cartão de Débito</span>
-                        </button>
-                        <button class="btn-pagamento" data-pagamento="pix">
-                            <i class="fa-brands fa-pix"></i>
-                            <span>PIX</span>
-                        </button>
+            </div>
+        </header>
+
+        <main>
+            <div id="dashboard">
+                <div class="dashboard-header">
+                    <div class="saldo">
+                        Informe sua matrícula para visualizar seu saldo
                     </div>
+                    <button
+                        class="btn-recarga-main"
+                        id="btn-ir-recarga"
+                        style="display: none"
+                    >
+                        Recarga
+                    </button>
                 </div>
-                <!-- Formulário Cartão Crédito/Débito -->
-                    <div id="cartao-form" class="opcao-pagamento" style="display: none; flex-direction: column; gap: 10px;">
+
+                <div class="extrato">
+                    <table class="extrato-tabela">
+                        <thead>
+                            <tr>
+                                <th>Data e Hora</th>
+                                <th>Lançamento</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="extrato-dados"></tbody>
+                    </table>
+                    <div class="paginacao" id="paginacao-container"></div>
+                </div>
+            </div>
+
+            <div id="recarga" style="display: none">
+                <div class="recarga-container">
+                    <h2>Recarga do Cartão do Restaurante Universitário</h2>
+                    <div class="valor">
+                        <div class="input-valor">
+                            <label for="valor-recarga"
+                                >Informe o valor desejado</label
+                            >
+                            <input
+                                type="text"
+                                id="valor-recarga"
+                                placeholder="Digite o valor com vírgula"
+                            />
+                        </div>
+                    </div>
+                    <div class="pagamento">
+                        <label>Selecione a forma de pagamento</label>
+                        <div class="forma-pagamento">
+                            <button
+                                class="btn-pagamento"
+                                data-pagamento="credito"
+                            >
+                                <i class="fa-solid fa-credit-card"></i>
+                                <span>Cartão de Crédito</span>
+                            </button>
+                            <button
+                                class="btn-pagamento"
+                                data-pagamento="debito"
+                            >
+                                <i class="fa-regular fa-credit-card"></i>
+                                <span>Cartão de Débito</span>
+                            </button>
+                            <button class="btn-pagamento" data-pagamento="pix">
+                                <i class="fa-brands fa-pix"></i>
+                                <span>PIX</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Formulário Cartão Crédito/Débito -->
+                    <div
+                        id="cartao-form"
+                        class="opcao-pagamento"
+                        style="display: none; flex-direction: column; gap: 10px"
+                    >
                         <label for="nome-cartao">Nome no Cartão:</label>
-                        <input id="nome-cartao" type="text" placeholder="Nome impresso no cartão">
+                        <input
+                            id="nome-cartao"
+                            type="text"
+                            placeholder="Nome impresso no cartão"
+                        />
 
                         <label for="numero-cartao">Número do Cartão:</label>
-                        <input id="numero-cartao" type="text" placeholder="Número do cartão">
+                        <input
+                            id="numero-cartao"
+                            type="text"
+                            placeholder="Número do cartão"
+                        />
 
                         <label for="validade-cartao">Validade:</label>
-                        <input id="validade-cartao" type="text" placeholder="MM/AA">
+                        <input
+                            id="validade-cartao"
+                            type="text"
+                            placeholder="MM/AA"
+                        />
 
                         <label for="cvv-cartao">CVV:</label>
-                        <input id="cvv-cartao" type="text" placeholder="CVV">
+                        <input id="cvv-cartao" type="text" placeholder="CVV" />
                     </div>
 
                     <!-- Opção PIX -->
-                    <div id="pix-info" class="opcao-pagamento" style="display: none; flex-direction: column; gap: 10px;">
-                        <p>Use a chave abaixo para realizar a recarga via PIX:</p>
-                        <input type="text" id="pix-chave" value="pix@exemplo.com" readonly>
-                        <button type="button" onclick="copiarChavePIX()">Copiar Chave PIX</button>
+                    <div
+                        id="pix-info"
+                        class="opcao-pagamento"
+                        style="display: none; flex-direction: column; gap: 10px"
+                    >
+                        <p>
+                            Use a chave abaixo para realizar a recarga via PIX:
+                        </p>
+                        <input
+                            type="text"
+                            id="pix-chave"
+                            value="ru+@exemplo.com"
+                            readonly
+                        />
+                        <button type="button" onclick="copiarChavePIX()">
+                            Copiar Chave PIX
+                        </button>
                     </div>
-                <button id="btn-recarregar-agora">Recarregar Agora</button>
-                <button id="btn-voltar-dashboard" class="btn-link">Voltar para Tela Inicial</button> 
-
-
+                    <button id="btn-recarregar-agora">Recarregar Agora</button>
+                    <button id="btn-voltar-dashboard" class="btn-link">
+                        Voltar para Tela Inicial
+                    </button>
+                </div>
             </div>
-        </div>
-    </main>
+        </main>
 
-    <script type="module" src="/js/main.js"></script>
-    
-</body>
+        <script type="module" src="/js/main.js"></script>
+    </body>
 </html>

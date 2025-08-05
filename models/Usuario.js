@@ -5,7 +5,7 @@ class Usuario {
         this.historico = historico;
     }
 
-    obterSaldo() {
+    getSaldo() {
         return this.saldo;
     }
 
@@ -18,7 +18,7 @@ class Usuario {
         this.saldo += valor;
     }
 
-    obterHistorico(pagina = 1, limite = 10) {
+    getHistorico(pagina = 1, limite = 10) {
         const historicoOrdenado = this.historico.sort(
             (a, b) => new Date(b.dataHora) - new Date(a.dataHora),
         );
