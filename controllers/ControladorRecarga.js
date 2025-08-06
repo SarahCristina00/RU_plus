@@ -1,9 +1,45 @@
+const fs = require("fs");
+const path = require("path");
 const Usuario = require("../models/Usuario");
+
+const DATA_FILE = path.join(__dirname, "../data/usuarios.json");
 
 class ControladorRecarga {
     constructor() {
-        // Usuários pré-cadastrados para teste
-        this.usuarios = {
+        this.usuarios = this.carregarUsuarios();
+    }
+
+    carregarUsuarios() {
+        try {
+            // Verifica se o diretório data existe
+            const dataDir = path.join(__dirname, "../data");
+            if (!fs.existsSync(dataDir)) {
+                fs.mkdirSync(dataDir);
+            }
+
+            // Carrega os dados do arquivo
+            if (fs.existsSync(DATA_FILE)) {
+                const data = fs.readFileSync(DATA_FILE, "utf8");
+                const usuariosData = JSON.parse(data);
+                const usuarios = {};
+
+                for (const [matricula, usuarioData] of Object.entries(
+                    usuariosData,
+                )) {
+                    usuarios[matricula] = new Usuario(
+                        usuarioData.matricula,
+                        usuarioData.saldo,
+                        usuarioData.historico,
+                    );
+                }
+                return usuarios;
+            }
+        } catch (err) {
+            console.error("Erro ao carregar usuários:", err);
+        }
+
+        // Retorna dados iniciais se o arquivo não existir
+        return {
             202376010: new Usuario("202376010", 30.0, [
                 {
                     dataHora: "2025-06-09T10:00:00-03:00",
@@ -24,6 +60,22 @@ class ControladorRecarga {
                 },
             ]),
         };
+    }
+
+    salvarUsuarios() {
+        const usuariosParaSalvar = {};
+        for (const [matricula, usuario] of Object.entries(this.usuarios)) {
+            usuariosParaSalvar[matricula] = {
+                matricula: usuario.matricula,
+                saldo: usuario.saldo,
+                historico: usuario.historico,
+            };
+        }
+
+        fs.writeFileSync(
+            DATA_FILE,
+            JSON.stringify(usuariosParaSalvar, null, 2),
+        );
     }
 
     // Retorna o saldo de um usuário
@@ -66,10 +118,21 @@ class ControladorRecarga {
         }
 
         usuario.adicionarTransacao("Recarga", valorNumerico);
+        this.salvarUsuarios();
+
+        const comprovante = {
+            matricula: usuario.matricula,
+            valor: valorNumerico.toFixed(2),
+            dataHora: new Date().toLocaleString("pt-BR"),
+            metodoPagamento: metodo,
+            codigoTransacao: `RU-${Date.now()}`,
+            saldoAtual: usuario.getSaldo().toFixed(2),
+        };
 
         res.json({
             mensagem: `Recarga de R$ ${valorNumerico.toFixed(2)} realizada com sucesso!`,
             novoSaldo: usuario.getSaldo(),
+            comprovante: comprovante,
         });
     }
 }
