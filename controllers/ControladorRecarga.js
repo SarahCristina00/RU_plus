@@ -6,55 +6,87 @@ const DATA_FILE = path.join(__dirname, "../data/usuarios.json");
 
 class ControladorRecarga {
     constructor() {
+        // Garante que o diretório data existe
+        this.criarDiretorioData();
         this.usuarios = this.carregarUsuarios();
+    }
+
+    criarDiretorioData() {
+        const dataDir = path.join(__dirname, "../data");
+        if (!fs.existsSync(dataDir)) {
+            fs.mkdirSync(dataDir);
+        }
+
+        // Se o arquivo não existe, cria um vazio válido
+        if (!fs.existsSync(DATA_FILE)) {
+            fs.writeFileSync(DATA_FILE, "{}", "utf8");
+        }
     }
 
     carregarUsuarios() {
         try {
-            // Verifica se o diretório data existe
-            const dataDir = path.join(__dirname, "../data");
-            if (!fs.existsSync(dataDir)) {
-                fs.mkdirSync(dataDir);
+            // Verifica se o arquivo está vazio
+            const stats = fs.statSync(DATA_FILE);
+            if (stats.size === 0) {
+                fs.writeFileSync(DATA_FILE, "{}", "utf8");
             }
 
-            // Carrega os dados do arquivo
-            if (fs.existsSync(DATA_FILE)) {
-                const data = fs.readFileSync(DATA_FILE, "utf8");
-                const usuariosData = JSON.parse(data);
-                const usuarios = {};
+            const data = fs.readFileSync(DATA_FILE, "utf8");
 
-                for (const [matricula, usuarioData] of Object.entries(
-                    usuariosData,
-                )) {
-                    usuarios[matricula] = new Usuario(
-                        usuarioData.matricula,
-                        usuarioData.saldo,
-                        usuarioData.historico,
-                    );
-                }
-                return usuarios;
+            // Verifica se o conteúdo é um JSON válido
+            if (!data.trim()) {
+                fs.writeFileSync(DATA_FILE, "{}", "utf8");
+                return this.getUsuariosIniciais();
             }
+
+            const usuariosData = JSON.parse(data);
+
+            // Se o JSON estiver vazio, retorna os usuários iniciais
+            if (Object.keys(usuariosData).length === 0) {
+                return this.getUsuariosIniciais();
+            }
+
+            const usuarios = {};
+
+            for (const [matricula, usuarioData] of Object.entries(
+                usuariosData,
+            )) {
+                usuarios[matricula] = new Usuario(
+                    usuarioData.matricula,
+                    usuarioData.saldo,
+                    usuarioData.historico,
+                );
+            }
+
+            return usuarios;
         } catch (err) {
-            console.error("Erro ao carregar usuários:", err);
+            console.error(
+                "Erro ao carregar usuários, usando dados iniciais:",
+                err.message,
+            );
+            // Se houver erro, cria um novo arquivo válido e retorna os iniciais
+            fs.writeFileSync(DATA_FILE, "{}", "utf8");
+            return this.getUsuariosIniciais();
         }
+    }
 
-        // Retorna dados iniciais se o arquivo não existir
+    getUsuariosIniciais() {
         return {
             202376010: new Usuario("202376010", 30.0, [
                 {
-                    dataHora: "2025-06-09T10:00:00-03:00",
+                    dataHora: new Date().toISOString(),
                     tipo: "Recarga",
                     valor: 30.0,
                 },
                 {
-                    dataHora: "2025-06-08T12:10:00-03:00",
+                    dataHora: new Date(Date.now() - 86400000).toISOString(), // Ontem
                     tipo: "Almoço",
                     valor: -1.4,
                 },
             ]),
             202312345: new Usuario("202312345", -25.0, [
                 {
-                    dataHora: "2025-06-09T11:00:00-03:00",
+                    dataHora: new Date().toISOString(),
                     tipo: "Recarga",
                     valor: 10.0,
                 },
@@ -63,19 +95,24 @@ class ControladorRecarga {
     }
 
     salvarUsuarios() {
-        const usuariosParaSalvar = {};
-        for (const [matricula, usuario] of Object.entries(this.usuarios)) {
-            usuariosParaSalvar[matricula] = {
-                matricula: usuario.matricula,
-                saldo: usuario.saldo,
-                historico: usuario.historico,
-            };
-        }
+        try {
+            const usuariosParaSalvar = {};
+            for (const [matricula, usuario] of Object.entries(this.usuarios)) {
+                usuariosParaSalvar[matricula] = {
+                    matricula: usuario.matricula,
+                    saldo: usuario.saldo,
+                    historico: usuario.historico,
+                };
+            }
 
-        fs.writeFileSync(
-            DATA_FILE,
-            JSON.stringify(usuariosParaSalvar, null, 2),
-        );
+            fs.writeFileSync(
+                DATA_FILE,
+                JSON.stringify(usuariosParaSalvar, null, 2),
+                "utf8",
+            );
+        } catch (err) {
+            console.error("Erro ao salvar usuários:", err);
+        }
     }
 
     // Retorna o saldo de um usuário
