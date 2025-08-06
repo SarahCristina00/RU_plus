@@ -1,20 +1,54 @@
 body {
-  font-family: Arial, sans-serif;
-  margin: 40px;
-  background-color: #f9f9f9;
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f8fa;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .comprovante {
-  border: 2px dashed #007BFF;
-  padding: 20px;
+  border: 2px solid #007BFF;
+  border-radius: 10px;
+  padding: 30px;
   background-color: white;
   max-width: 500px;
-  margin: auto;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.comprovante::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(90deg, #007BFF, #00a8ff);
 }
 
 h2 {
   color: #007BFF;
   text-align: center;
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 24px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  right: 25%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #007BFF, transparent);
 }
 
 .info {
@@ -22,12 +56,87 @@ h2 {
 }
 
 .info p {
-  margin: 5px 0;
+  margin: 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.info p:last-child {
+  border-bottom: none;
+}
+
+.info strong {
+  color: #555;
+  font-weight: 600;
+  min-width: 150px;
 }
 
 .footer {
-  margin-top: 20px;
+  margin-top: 30px;
   text-align: center;
   font-size: 12px;
-  color: #666;
+  color: #888;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+/* Estilos para os botões (se estiver usando) */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  background-color: #007BFF;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+}
+
+.btn-secondary {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.btn-secondary:hover {
+  background-color: #e2e6ea;
+}
+
+/* Estilos para impressão */
+@media print {
+  body {
+    background-color: white;
+    padding: 0;
+    margin: 0;
+  }
+
+  .comprovante {
+    border: none;
+    box-shadow: none;
+    padding: 15px;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .comprovante::before {
+    height: 5px;
+  }
 }

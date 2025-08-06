@@ -140,4 +140,41 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(() => alert('Chave PIX copiada!'))
             .catch(() => alert('Falha ao copiar a chave PIX.'));
     };
+
+    // === FUNÇÃO PARA PROCESSAR RECARGA ===
+    async function processarRecarga() {
+        const matricula = elementos.matriculaLogadaSpan.textContent;
+        const valor = parseFloat(elementos.valorRecargaInput.value.replace(',', '.'));
+        const metodoPagamento = elementos.opcoesPagamento.querySelector('.selected')?.textContent.trim();
+
+        if (isNaN(valor) || valor <= 0) return alert('Por favor, insira um valor de recarga válido.');
+        if (!metodoPagamento) return alert('Por favor, selecione uma forma de pagamento.');
+
+        try {
+            // Enviar recarga para o servidor
+            const resultado = await enviarRecarga(matricula, valor, metodoPagamento);
+
+            // Mostrar notificação
+            mostrarNotificacao(resultado.mensagem, elementos.notificacaoSucesso);
+
+            // Codificar os dados para URL
+            const dadosCodificados = encodeURIComponent(JSON.stringify(resultado.comprovante));
+
+            // Abrir comprovante em nova janela com os dados na URL
+            const comprovanteWindow = window.open(`comprovante.html?data=${dadosCodificados}`, '_blank');
+
+            // Fallback: salva no localStorage se a janela não abrir
+            if (!comprovanteWindow) {
+                localStorage.setItem('dadosComprovante', JSON.stringify(resultado.comprovante));
+                window.open('comprovante.html', '_blank');
+            }
+
+            // Atualizar dashboard
+            await carregarDados();
+            mostrarDashboard(elementos);
+
+        } catch (erro) {
+            alert(erro.message);
+        }
+    }
 });
