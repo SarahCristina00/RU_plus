@@ -48,7 +48,7 @@ export function mostrarNotificacao(mensagem, container) {
     container.style.display = 'block';
     setTimeout(() => {
         container.style.display = 'none';
-    }, 5000);
+    }, 2000);
 }
 
 export function atualizarHeaderUI(matricula, elements) {
@@ -146,4 +146,31 @@ export function limparDashboard(elements) {
     saldoDisplay.style.backgroundColor = 'var(--primaria)';
     extratoDados.innerHTML = '<tr><td colspan="3">Nenhum histórico para exibir.</td></tr>';
     paginacaoContainer.innerHTML = '';
+}
+
+export function abrirModalComprovante(dados) {
+    const modal = document.getElementById('comprovante');
+    if (!modal) return;
+
+    const valorEl = modal.querySelector('#comprovante-valor');
+    const matriculaEl = modal.querySelector('#comprovante-matricula');
+    const saldoEl = modal.querySelector('#comprovante-saldo-valor');
+
+    if (valorEl) valorEl.textContent = dados.valor;
+    if (matriculaEl) matriculaEl.textContent = dados.matricula;
+    if (saldoEl) saldoEl.textContent = dados.saldoAtual;
+    modal.style.display = 'flex';
+
+    const closeBtn = modal.querySelector('#comprovante-btn-fechar');
+    if(closeBtn) {
+        closeBtn.onclick = (e) => {
+            e.preventDefault();
+            modal.style.display = 'none';
+        };
+    }
+    modal.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
 }

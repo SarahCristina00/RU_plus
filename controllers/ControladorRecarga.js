@@ -64,7 +64,6 @@ class ControladorRecarga {
                 "Erro ao carregar usuários, usando dados iniciais:",
                 err.message,
             );
-            // Se houver erro, cria um novo arquivo válido e retorna os iniciais
             fs.writeFileSync(DATA_FILE, "{}", "utf8");
             return this.getUsuariosIniciais();
         }
@@ -72,23 +71,113 @@ class ControladorRecarga {
 
     getUsuariosIniciais() {
         return {
-            202376010: new Usuario("202376010", 30.0, [
+            202212345: new Usuario("202212345", 13.20, [
                 {
-                    dataHora: new Date().toISOString(),
+                    dataHora: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
                     tipo: "Recarga",
-                    valor: 30.0,
+                    valor: 25.00,
                 },
                 {
-                    dataHora: new Date(Date.now() - 86400000).toISOString(), // Ontem
+                    dataHora: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
                     tipo: "Almoço",
-                    valor: -1.4,
+                    valor: -1.40,
+                },
+                {
+                    dataHora: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                    tipo: "Jantar",
+                    valor: -1.40,
+                },
+                {
+                    dataHora: new Date().toISOString(),
+                    tipo: "Café da Manhã",
+                    valor: -0.50,
+                },
+                {
+                    dataHora: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                    tipo: "Jantar",
+                    valor: -1.40,
+                },
+                {
+                    dataHora: new Date().toISOString(),
+                    tipo: "Café da Manhã",
+                    valor: -0.50,
+                },
+                                {
+                    dataHora: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                    tipo: "Almoço",
+                    valor: -1.40,
+                },
+                {
+                    dataHora: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                    tipo: "Jantar",
+                    valor: -1.40,
+                },
+                {
+                    dataHora: new Date().toISOString(),
+                    tipo: "Café da Manhã",
+                    valor: -0.50,
+                },
+                {
+                    dataHora: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                    tipo: "Almoço",
+                    valor: -1.40,
+                },
+                {
+                    dataHora: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                    tipo: "Jantar",
+                    valor: -1.40,
+                },
+                {
+                    dataHora: new Date().toISOString(),
+                    tipo: "Café da Manhã",
+                    valor: -0.50,
                 },
             ]),
-            202312345: new Usuario("202312345", -25.0, [
+            202312345: new Usuario("202312345", -4.40, [
+                {
+                    dataHora: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+                    tipo: "Recarga",
+                    valor: 5.00,
+                },
+                {
+                    dataHora: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+                    tipo: "Almoço",
+                    valor: -1.40,
+                },
+                {
+                    dataHora: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                    tipo: "Jantar",
+                    valor: -1.40,
+                },
+                {
+                    dataHora: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                    tipo: "Almoço",
+                    valor: -1.40,
+                },
                 {
                     dataHora: new Date().toISOString(),
-                    tipo: "Recarga",
-                    valor: 10.0,
+                    tipo: "Almoço",
+                    valor: -1.40,
+                },
+                                {
+                    dataHora: new Date().toISOString(),
+                    tipo: "Café da Manhã",
+                    valor: -0.50,
+                },
+                {
+                    dataHora: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                    tipo: "Almoço",
+                    valor: -1.40,
+                },
+                {
+                    dataHora: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                    tipo: "Jantar",
+                    valor: -1.40,
+                },
+                {
+                    dataHora: new Date().toISOString(),
+                    tipo: "Café da Manhã",
+                    valor: -0.50,
                 },
             ]),
         };
