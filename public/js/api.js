@@ -22,7 +22,6 @@ export async function buscarDadosUsuario(matricula, pagina = 1) {
     }
 }
 
-// Enviar recarga ao servidor
 export async function enviarRecarga(matricula, valor, metodoPagamento) {
     try {
         const resposta = await fetch("/recargas/recarga", {

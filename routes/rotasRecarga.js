@@ -11,9 +11,6 @@ router.get("/historico/:matricula", (req, res) =>
   ControladorRecarga.getHistorico(req, res),
 );
 
-router.post(
-  "/recarga",
-  (req, res) => ControladorRecarga.recarregar(req, res), // <-- ALTERADO
-);
+router.post("/recarga", (req, res) => ControladorRecarga.recarregar(req, res));
 
 module.exports = router;
