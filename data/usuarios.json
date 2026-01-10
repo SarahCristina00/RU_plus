@@ -1,1 +1,87 @@
-{}
+{
+  "001": {
+    "matricula": "001",
+    "nome": "Aluno Ativo (Várias Transações)",
+    "saldo": 42.00,
+    "historico": [
+      {
+        "tipo": "Almoco",
+        "valor": -1.40,
+        "dataHora": "2026-01-10T12:30:00.000Z"
+      },
+      {
+        "tipo": "Recarga",
+        "valor": 20.00,
+        "dataHora": "2026-01-09T08:15:00.000Z"
+      },
+      {
+        "tipo": "Jantar",
+        "valor": -1.40,
+        "dataHora": "2026-01-08T18:45:00.000Z"
+      },
+      {
+        "tipo": "Almoco",
+        "valor": -1.40,
+        "dataHora": "2026-01-08T12:10:00.000Z"
+      },
+      {
+        "tipo": "Almoco",
+        "valor": -1.40,
+        "dataHora": "2026-01-07T12:05:00.000Z"
+      },
+      {
+        "tipo": "Jantar",
+        "valor": -1.40,
+        "dataHora": "2026-01-06T19:00:00.000Z"
+      },
+      {
+        "tipo": "Almoco",
+        "valor": -1.40,
+        "dataHora": "2026-01-06T12:30:00.000Z"
+      },
+      {
+        "tipo": "Recarga",
+        "valor": 30.00,
+        "dataHora": "2026-01-01T10:00:00.000Z"
+      }
+    ]
+  },
+  "002": {
+    "matricula": "002",
+    "nome": "Aluno Novo (Sem Histórico)",
+    "saldo": 0.00,
+    "historico": []
+  },
+  "003": {
+    "matricula": "003",
+    "nome": "Aluno Devedor (Saldo Negativo)",
+    "saldo": -1.40,
+    "historico": [
+      {
+        "tipo": "Almoco",
+        "valor": -1.40,
+        "dataHora": "2026-01-10T12:15:00.000Z"
+      },
+      {
+        "tipo": "Recarga",
+        "valor": 5.00,
+        "dataHora": "2026-01-05T09:00:00.000Z"
+      },
+      {
+        "tipo": "Almoco",
+        "valor": -1.40,
+        "dataHora": "2026-01-04T12:00:00.000Z"
+      },
+      {
+        "tipo": "Almoco",
+        "valor": -1.40,
+        "dataHora": "2026-01-03T12:00:00.000Z"
+      },
+      {
+        "tipo": "Almoco",
+        "valor": -1.40,
+        "dataHora": "2026-01-02T12:00:00.000Z"
+      }
+    ]
+  }
+}
