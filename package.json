@@ -1,6 +1,23 @@
 {
+  "name": "ru_plus",
+  "version": "2.0.0",
+  "description": "Sistema de Recarga do Cartão do Restaurante Universitário",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0"
-  }
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3"
+  },
+  "keywords": ["ru", "recarga", "universitario"],
+  "author": "Lara Dias e Sarah Cristina",
+  "license": "MIT"
 }
