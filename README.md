@@ -26,7 +26,7 @@ Este é o sistema RU+, uma plataforma web para facilitar a recarga online do car
 O projeto possui uma suíte de testes automatizados implementada com Jest.
 
 ### Executando os testes
-```bash
+
 # Instalar dependências
 npm install
 
