@@ -21,6 +21,18 @@ Este é o sistema RU+, uma plataforma web para facilitar a recarga online do car
 2. Execute `npm install` para instalar as dependências
 3. Rode `npm start` para iniciar o servidor
 
+## 🧪 Testes Automatizados
+
+O projeto possui uma suíte de testes automatizados implementada com Jest.
+
+### Executando os testes
+```bash
+# Instalar dependências
+npm install
+
+# Executar todos os testes
+npm test
+
 ## Autores do projeto 
  - Lara dias
  - Sarah Cristina
