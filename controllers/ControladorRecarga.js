@@ -3,69 +3,60 @@ const path = require("path");
 const Usuario = require("../models/Usuario");
 
 const DATA_FILE = path.join(__dirname, "../data/usuarios.json");
+const DATA_DIR = path.join(__dirname, "../data");
 
 class ControladorRecarga {
     constructor() {
-        // Garante que o diretório data existe
+        if (ControladorRecarga.instancia) {
+            return ControladorRecarga.instancia;
+        }
+        this.usuarios = {};
         this.criarDiretorioData();
         this.usuarios = this.carregarUsuarios();
+        ControladorRecarga.instancia = this;
     }
 
     criarDiretorioData() {
-        const dataDir = path.join(__dirname, "../data");
-        if (!fs.existsSync(dataDir)) {
-            fs.mkdirSync(dataDir);
-        }
-
-        // Se o arquivo não existe, cria um vazio válido
-        if (!fs.existsSync(DATA_FILE)) {
-            fs.writeFileSync(DATA_FILE, "{}", "utf8");
+        if (!fs.existsSync(DATA_DIR)) {
+            fs.mkdirSync(DATA_DIR, { recursive: true });
         }
     }
 
     carregarUsuarios() {
         try {
-            // Verifica se o arquivo está vazio
-            const stats = fs.statSync(DATA_FILE);
-            if (stats.size === 0) {
-                fs.writeFileSync(DATA_FILE, "{}", "utf8");
+            if (!fs.existsSync(DATA_FILE) || fs.statSync(DATA_FILE).size === 0) {
+                const dadosIniciais = this.getUsuariosIniciais();
+                this.usuarios = dadosIniciais;
+                this.salvarUsuarios(); 
+                return dadosIniciais;
             }
 
             const data = fs.readFileSync(DATA_FILE, "utf8");
 
             // Verifica se o conteúdo é um JSON válido
             if (!data.trim()) {
-                fs.writeFileSync(DATA_FILE, "{}", "utf8");
                 return this.getUsuariosIniciais();
             }
 
             const usuariosData = JSON.parse(data);
 
-            // Se o JSON estiver vazio, retorna os usuários iniciais
-            if (Object.keys(usuariosData).length === 0) {
-                return this.getUsuariosIniciais();
-            }
-
-            const usuarios = {};
-
-            for (const [matricula, usuarioData] of Object.entries(
-                usuariosData,
-            )) {
-                usuarios[matricula] = new Usuario(
+            const usuariosInstanciados = {};
+            for (const [matricula, usuarioData] of Object.entries(usuariosData)) {
+                usuariosInstanciados[matricula] = new Usuario(
                     usuarioData.matricula,
                     usuarioData.saldo,
-                    usuarioData.historico,
+                    usuarioData.historico
                 );
             }
-
-            return usuarios;
+            return usuariosInstanciados;
         } catch (err) {
             console.error(
                 "Erro ao carregar usuários, usando dados iniciais:",
                 err.message,
             );
-            fs.writeFileSync(DATA_FILE, "{}", "utf8");
-            return this.getUsuariosIniciais();
+            const dadosIniciais = this.getUsuariosIniciais();
+            this.salvarArquivo(dadosIniciais);
+            return dadosIniciais;
         }
     }
 

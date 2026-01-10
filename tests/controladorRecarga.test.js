@@ -11,6 +11,7 @@ describe('ControladorRecarga - Testes de Unidade', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
+    ControladorRecarga.instancia = null
     path.join.mockReturnValue('/fake/path/usuarios.json');
     fs.existsSync.mockReturnValue(true);
     fs.statSync.mockReturnValue({ size: 100 });
@@ -32,6 +33,7 @@ describe('ControladorRecarga - Testes de Unidade', () => {
   });
 
   test('CTU08 - deve criar usuários iniciais se arquivo estiver vazio', () => {
+    ControladorRecarga.instancia = null
     fs.readFileSync.mockReturnValue(JSON.stringify({
         '202376010': { matricula: '202376010', saldo: 13.20 },
         '202312345': { matricula: '202312345', saldo: -4.40 }
