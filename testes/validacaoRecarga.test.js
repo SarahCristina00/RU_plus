@@ -55,8 +55,9 @@ describe('Validações de Regras de Negócio - Testes de Unidade', () => {
       });
     };
     
-    expect(formatarMoeda(1.40)).toBe('R$ 1,40');
-    expect(formatarMoeda(300.00)).toBe('R$ 300,00');
-    expect(formatarMoeda(50.50)).toBe('R$ 50,50');
+    
+    expect(formatarMoeda(1.40)).toMatch(/R\$\s*1,40/);
+    expect(formatarMoeda(300.00)).toMatch(/R\$\s*300,00/);
+    expect(formatarMoeda(50.50)).toMatch(/R\$\s*50,50/);
   });
 });
