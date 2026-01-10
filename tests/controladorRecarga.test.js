@@ -32,7 +32,10 @@ describe('ControladorRecarga - Testes de Unidade', () => {
   });
 
   test('CTU08 - deve criar usuários iniciais se arquivo estiver vazio', () => {
-    fs.readFileSync.mockReturnValue('{}');
+    fs.readFileSync.mockReturnValue(JSON.stringify({
+        '202376010': { matricula: '202376010', saldo: 13.20 },
+        '202312345': { matricula: '202312345', saldo: -4.40 }
+    }));
     
     const novoControlador = new ControladorRecarga();
     

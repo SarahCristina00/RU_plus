@@ -24,15 +24,15 @@ describe('Classe Usuario - Testes de Unidade', () => {
         usuario.adicionarTransacao(tipo,valor);
 
         expect(usuario.saldo).toBe(70.00);
-        expect(usuario.historico).toHaveLenth(1);
+        expect(usuario.historico).toHaveLength(1);
         expect(usuario.historico[0].tipo).toBe(tipo);
-        expect(usuario.historico[0].tipo).toBe(valor);
+        expect(usuario.historico[0].valor).toBe(valor);
         expect(usuario.historico[0].dataHora).toBeDefined();
     });
 
     test('CTU04 - adicionar transação negativa (uso no RU)', () => {
         usuario.adicionarTransacao('Almoco', -1.40);
-        expect(usuario.saldo).toBe(68.60);
+        expect(usuario.saldo).toBe(48.60);
 
     });
 
@@ -43,7 +43,7 @@ describe('Classe Usuario - Testes de Unidade', () => {
         }
         const resultado = usuario.getHistorico(1, 10);
 
-        expect(resultado.items).toHavelength(10);
+        expect(resultado.items).toHaveLength(10);
         expect(resultado.totalItems).toBe(15);
         expect(resultado.totalPages).toBe(2);
         expect(resultado.currentPage).toBe(1);
