@@ -263,4 +263,4 @@ class ControladorRecarga {
     }
 }
 
-module.exports = new ControladorRecarga();
+module.exports = ControladorRecarga;
